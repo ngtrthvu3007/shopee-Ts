@@ -5,14 +5,15 @@ const plugins = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', 'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'],
   corePlugins: {
     container: false
   },
   theme: {
     extend: {
       colors: {
-        orange: '#ee4d2d'
+        orange: '#ee4d2d',
+        white: '#fff'
       }
     }
   },
@@ -27,6 +28,7 @@ export default {
           paddingRight: theme('spacing.4')
         }
       })
-    })
+    }),
+    require('flowbite/plugin')
   ]
 }

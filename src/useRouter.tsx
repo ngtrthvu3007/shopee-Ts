@@ -3,6 +3,7 @@ import { AppProvider } from './context'
 import SignUpLayout from './layouts/signupLayout'
 import ProductList from './pages/ProductList'
 import AuthorPage from './pages/AuthorPage'
+import MainLayout from './layouts/MainLayout'
 
 export default function useRouters() {
   const location = useLocation()
@@ -11,7 +12,14 @@ export default function useRouters() {
     path_name: location.pathname
   }
   const routers = useRoutes([
-    { path: '/', element: <ProductList /> },
+    {
+      path: '/',
+      element: (
+        <MainLayout>
+          <ProductList />
+        </MainLayout>
+      )
+    },
     ...paths.map((path) => ({
       path,
       element: (
