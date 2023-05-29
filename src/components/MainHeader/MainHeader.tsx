@@ -83,7 +83,7 @@ const MainHeader: React.FC = () => {
             className='ml-3 flex '
             renderPopover={
               <>
-                <Link to='/' className={profileUserClass}>
+                <Link to='/profile' className={profileUserClass}>
                   Tài Khoản Của Tôi
                 </Link>
                 <Link to='/' className={profileUserClass}>
@@ -114,7 +114,7 @@ const MainHeader: React.FC = () => {
                 className='flex-grow border-none bg-transparent px-3 py-2 text-black outline-none'
                 placeholder='Freeship freeship '
               />
-              <button className='flex-shrink-0 rounded-sm bg-orange px-6 py-2 hover:opacity-90'>
+              <button className=' flex-shrink-0 rounded-sm bg-orange px-6 py-2 hover:opacity-90'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   viewBox='0 0 24 24'
@@ -130,16 +130,50 @@ const MainHeader: React.FC = () => {
               </button>
             </div>
             <div className='col-span-1'>
-              <Link to='/'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 24 24'
-                  fill='currentColor'
-                  className='h-9 w-9 text-white'
-                >
-                  <path d='M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z' />
-                </svg>
-              </Link>
+              <Popover
+                className='relative '
+                renderPopover={
+                  <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
+                    <div className='p-2'>
+                      <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                      <div className='mt-5'>
+                        <div className='mt-4 flex'>
+                          <div className='flex-shrink-0'>
+                            <img
+                              src='https://down-vn.img.susercontent.com/file/ad14d03cf3d7472ce58b2951c4f89fc3_tn'
+                              alt='image'
+                              className='h-11 w-11 object-cover'
+                            />
+                          </div>
+                          <div className='ml-2 flex-grow overflow-hidden'>
+                            <div className='truncate'>Bàn di chuột, lót chuột chống nước cỡ lớn 90x40cm dày 3mm</div>
+                          </div>
+                          <div className='ml-2 flex-shrink-0'>
+                            <span className='text-orange'>₫88.000</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='mt-6 flex items-center justify-between'>
+                        <div className='text-xs capitalize'>10 Thêm hàng vào giỏ</div>
+                        <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-80'>
+                          Xem giỏ hàng
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                }
+              >
+                <Link to='/'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    viewBox='0 0 24 24'
+                    fill='currentColor'
+                    className=' h-9 w-9 text-white'
+                  >
+                    <path d='M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z' />
+                  </svg>
+                </Link>
+              </Popover>
             </div>
           </nav>
         </div>

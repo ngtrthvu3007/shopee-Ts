@@ -13,7 +13,7 @@ export default function Popover({ children, className, renderPopover }: Props) {
   const { refs, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    placement: 'bottom',
+    placement: 'bottom-start',
     middleware: [
       arrow({
         element: arrowRef
@@ -38,7 +38,7 @@ export default function Popover({ children, className, renderPopover }: Props) {
             ref={refs.setFloating}
             style={{
               position: 'absolute',
-              top: '25px'
+              top: '30px'
             }}
             {...getFloatingProps()}
             initial={{ opacity: 0, transform: 'scale(0)' }}
