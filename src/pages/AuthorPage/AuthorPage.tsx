@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Input from '../../components/Input/Input'
 import { useContext } from 'react'
-import AppContext from '../../context'
+import { AppContext } from '../../context'
 import { useMutation } from '@tanstack/react-query'
 import { registerApi, loginApi } from '../../apis/auth.api'
 import { isAxios422 } from '../../utils/http'
-import { ResponseApi } from 'src/@types/utils.type'
+import { ResponseError } from '../../@types/utils.type'
 
 interface FormData {
   email: string
@@ -14,7 +14,8 @@ interface FormData {
   confirm_password?: string
 }
 const AuthorPage = () => {
-  const { path_name } = useContext(AppContext)
+  const { path_name, setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
   const isLoginPage = path_name === '/login'
   const validateRule = {
     email: {
@@ -85,11 +86,12 @@ const AuthorPage = () => {
     const mutationFetchAPI = isLoginPage ? loginMutation : registerMutation
 
     mutationFetchAPI.mutate(newData, {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
+        setIsAuthenticated(true)
+        navigate('/')
       },
       onError: (error) => {
-        if (isAxios422<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (isAxios422<ResponseError<Omit<FormData, 'confirm_password'>>>(error)) {
           const responseError = error.response?.data.data
           if (responseError) {
             Object.keys(responseError).forEach((key) => {

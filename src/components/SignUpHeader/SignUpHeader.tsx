@@ -1,9 +1,15 @@
-import { Link } from 'react-router-dom'
-import { useContext } from 'react'
-import AppContext from '../..//context'
+import { Link, useLocation } from 'react-router-dom'
+import { useContext, useEffect } from 'react'
+import { AppContext } from '../../context'
 
 export default function SignUpHeader() {
-  const { path_name } = useContext(AppContext)
+  const location = useLocation()
+  const { path_name, setPathName } = useContext(AppContext)
+  useEffect(() => {
+    setPathName(location.pathname)
+  }, [location.pathname])
+
+  console.log(path_name)
   const isLogigPage = path_name === '/login'
   return (
     <header className='py-5'>
@@ -16,7 +22,7 @@ export default function SignUpHeader() {
               </g>
             </svg>
           </Link>
-          <div className='ml-5 text-2xl lg:text-2xl'>{isLogigPage ? 'Đăng nhập' : 'Đăng ký'}</div>
+          <div className='ml-5 text-2xl lg:text-2xl'>{isLogigPage === true ? 'Đăng nhập' : 'Đăng ký'}</div>
         </nav>
       </div>
     </header>

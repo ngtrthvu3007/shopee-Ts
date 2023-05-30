@@ -1,9 +1,26 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Popover from '../Popover'
+import { useMutation } from '@tanstack/react-query'
+import { logoutApi } from '../../apis/auth.api'
+import { useContext } from 'react'
+import { AppContext } from '../../context'
 
 const MainHeader: React.FC = () => {
-  const languageClass: string = 'cursor-pointer px-4 py-2 hover:text-orange'
-  const profileUserClass: string = ' block w-full cursor-pointer px-3 py-2 text-sm hover:text-orange'
+  const navigate = useNavigate()
+  const { setIsAuthenticated, isAuthenticated } = useContext(AppContext)
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutApi,
+    onSuccess: () => {
+      setIsAuthenticated(false)
+      navigate('/')
+    }
+  })
+  const logout = () => {
+    logoutMutation.mutate()
+  }
+  const languageClass = 'cursor-pointer px-4 py-2 hover:text-orange'
+  const profileUserClass = ' block w-full cursor-pointer px-3 py-2 text-sm hover:text-orange'
   return (
     <div className='bg-orange'>
       <div className=' mx-auto flex max-w-7xl justify-between px-4 pt-1  text-sm text-white'>
@@ -79,23 +96,37 @@ const MainHeader: React.FC = () => {
               />
             </svg>
           </Popover>
-          <Popover
-            className='ml-3 flex '
-            renderPopover={
-              <>
-                <Link to='/profile' className={profileUserClass}>
-                  Tài Khoản Của Tôi
-                </Link>
-                <Link to='/' className={profileUserClass}>
-                  Đơn Mua
-                </Link>
-                <span className={profileUserClass}>Đăng Xuất</span>
-              </>
-            }
-          >
-            <img src='https://react.dev/images/og-home.png' alt='avt' className='h-5 w-5 rounded-full object-cover' />
-            <span className='ml-1'>ngtrthvu</span>
-          </Popover>
+          {isAuthenticated ? (
+            <Popover
+              className='ml-3 flex '
+              renderPopover={
+                <>
+                  <Link to='/profile' className={profileUserClass}>
+                    Tài Khoản Của Tôi
+                  </Link>
+                  <Link to='/' className={profileUserClass}>
+                    Đơn Mua
+                  </Link>
+                  <span onClick={logout} className={profileUserClass}>
+                    Đăng Xuất
+                  </span>
+                </>
+              }
+            >
+              <img src='https://react.dev/images/og-home.png' alt='avt' className='h-5 w-5 rounded-full object-cover' />
+              <span className='ml-1'>ngtrthvu</span>
+            </Popover>
+          ) : (
+            <div className='flex items-center'>
+              <Link to='/register' className='mx-3 capitalize hover:text-white/70'>
+                Đăng ký
+              </Link>
+              <div className='h-4 border-r-[1px] border-r-white/40'></div>
+              <Link to='/login' className='mx-3 capitalize hover:text-white/70'>
+                Đăng nhập
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       <header className='py-5 '>
@@ -141,7 +172,7 @@ const MainHeader: React.FC = () => {
                           <div className='flex-shrink-0'>
                             <img
                               src='https://down-vn.img.susercontent.com/file/ad14d03cf3d7472ce58b2951c4f89fc3_tn'
-                              alt='image'
+                              alt='anh'
                               className='h-11 w-11 object-cover'
                             />
                           </div>
