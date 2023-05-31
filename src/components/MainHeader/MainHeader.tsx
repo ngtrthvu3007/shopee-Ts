@@ -4,16 +4,17 @@ import { useMutation } from '@tanstack/react-query'
 import { logoutApi } from '../../apis/auth.api'
 import { useContext } from 'react'
 import { AppContext } from '../../context'
-
+import path from '../../constants/path'
 const MainHeader: React.FC = () => {
   const navigate = useNavigate()
-  const { setIsAuthenticated, isAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, isAuthenticated, setUser, user } = useContext(AppContext)
 
   const logoutMutation = useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
       setIsAuthenticated(false)
-      navigate('/')
+      setUser(null)
+      navigate(path.home)
     }
   })
   const logout = () => {
@@ -101,10 +102,10 @@ const MainHeader: React.FC = () => {
               className='ml-3 flex '
               renderPopover={
                 <>
-                  <Link to='/profile' className={profileUserClass}>
+                  <Link to={path.profile} className={profileUserClass}>
                     Tài Khoản Của Tôi
                   </Link>
-                  <Link to='/' className={profileUserClass}>
+                  <Link to={path.home} className={profileUserClass}>
                     Đơn Mua
                   </Link>
                   <span onClick={logout} className={profileUserClass}>
@@ -114,15 +115,15 @@ const MainHeader: React.FC = () => {
               }
             >
               <img src='https://react.dev/images/og-home.png' alt='avt' className='h-5 w-5 rounded-full object-cover' />
-              <span className='ml-1'>ngtrthvu</span>
+              <span className='ml-1'>{user?.email}</span>
             </Popover>
           ) : (
             <div className='flex items-center'>
-              <Link to='/register' className='mx-3 capitalize hover:text-white/70'>
+              <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
                 Đăng ký
               </Link>
               <div className='h-4 border-r-[1px] border-r-white/40'></div>
-              <Link to='/login' className='mx-3 capitalize hover:text-white/70'>
+              <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
                 Đăng nhập
               </Link>
             </div>
@@ -194,7 +195,7 @@ const MainHeader: React.FC = () => {
                   </div>
                 }
               >
-                <Link to='/'>
+                <Link to={path.home}>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     viewBox='0 0 24 24'

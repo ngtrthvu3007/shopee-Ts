@@ -1,12 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Input from '../../components/Input/Input'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AppContext } from '../../context'
 import { useMutation } from '@tanstack/react-query'
 import { registerApi, loginApi } from '../../apis/auth.api'
 import { isAxios422 } from '../../utils/http'
-import { ResponseError } from '../../@types/utils.type'
+import { ResponseError } from '../../types/utils.type'
+import path from '../../constants/path'
 
 interface FormData {
   email: string
@@ -14,7 +15,8 @@ interface FormData {
   confirm_password?: string
 }
 const AuthorPage = () => {
-  const { path_name, setIsAuthenticated } = useContext(AppContext)
+  const { path_name, setIsAuthenticated, setUser } = useContext(AppContext)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const isLoginPage = path_name === '/login'
   const validateRule = {
@@ -82,15 +84,19 @@ const AuthorPage = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
+    console.log(123)
     const { confirm_password, ...newData } = data
     const mutationFetchAPI = isLoginPage ? loginMutation : registerMutation
-
+    setIsLoading(true)
     mutationFetchAPI.mutate(newData, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsAuthenticated(true)
-        navigate('/')
+        navigate(path.home)
+        setIsLoading(false)
+        setUser(data.data.data.user)
       },
       onError: (error) => {
+        setIsLoading(false)
         if (isAxios422<ResponseError<Omit<FormData, 'confirm_password'>>>(error)) {
           const responseError = error.response?.data.data
           if (responseError) {
@@ -151,7 +157,13 @@ const AuthorPage = () => {
                 </div>
               )}
               <div className='mt-3'>
-                <button type='submit' className='w-full bg-orange px-2 py-3 text-center text-sm uppercase text-white'>
+                <button
+                  type='submit'
+                  className={` ${
+                    isLoading && 'opacity-60'
+                  } w-full bg-orange px-2 py-3 text-center text-sm uppercase text-white`}
+                  disabled={isLoading}
+                >
                   {isLoginPage ? 'Đăng nhập' : 'Đăng ký'}
                 </button>
               </div>
@@ -159,7 +171,7 @@ const AuthorPage = () => {
                 <span className='text-slate-400'>
                   {isLoginPage ? 'Bạn chưa có tài khoản?' : 'Bạn đã có tài khoản?'}
                 </span>
-                <Link to={isLoginPage ? '/register' : '/login'} className='ml-1 text-orange'>
+                <Link to={isLoginPage ? path.register : path.login} className='ml-1 text-orange'>
                   {!isLoginPage ? 'Đăng nhập' : 'Đăng ký'}
                 </Link>
               </div>
